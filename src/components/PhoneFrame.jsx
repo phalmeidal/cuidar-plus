@@ -7,8 +7,8 @@ export default function PhoneFrame({ children }) {
         <span className="iphone-button power" aria-hidden="true" />
         <span className="iphone-button volume-up" aria-hidden="true" />
         <span className="iphone-button volume-down" aria-hidden="true" />
+        <div className="dynamic-island" aria-hidden="true" />
         <div className="iphone-screen">
-          <div className="dynamic-island" aria-hidden="true" />
           {children}
         </div>
       </div>

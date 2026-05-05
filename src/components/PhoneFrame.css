@@ -41,7 +41,7 @@
 
 .dynamic-island {
   position: absolute;
-  top: 14px;
+  top: 24px;
   left: 50%;
   z-index: 20;
   display: block;
@@ -94,7 +94,7 @@
   gap: 8px;
   border-right: 0;
   border-bottom: 1px solid var(--line);
-  padding: 52px 12px 12px;
+  padding: 62px 12px 12px;
 }
 
 .iphone-screen .brand {
@@ -168,7 +168,7 @@
 
 .iphone-screen .splash {
   min-height: 100%;
-  padding: 52px 18px 22px;
+  padding: 72px 18px 22px;
   background:
     radial-gradient(circle at 35% 20%, rgba(22, 163, 74, 0.2), transparent 22rem),
     linear-gradient(135deg, #f8fafc, #ebf9f0 58%, #fffbea);
