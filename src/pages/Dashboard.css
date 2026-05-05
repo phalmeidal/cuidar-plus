@@ -1,0 +1,90 @@
+.dashboard-hero {
+  display: grid;
+  gap: 18px;
+  align-items: end;
+}
+
+.risk-card {
+  border-color: rgba(220, 38, 38, 0.18);
+}
+
+.risk-card.green {
+  border-color: rgba(22, 163, 74, 0.22);
+}
+
+.risk-card.yellow {
+  border-color: rgba(234, 179, 8, 0.24);
+}
+
+.risk-card-body {
+  display: grid;
+  gap: 18px;
+}
+
+.risk-score-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 8px 0 10px;
+}
+
+.risk-score-row strong {
+  color: var(--ink);
+  font-size: clamp(4rem, 18vw, 7rem);
+  line-height: 0.92;
+}
+
+.risk-ring {
+  display: grid;
+  width: min(190px, 58vw);
+  aspect-ratio: 1;
+  place-items: center;
+  justify-self: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle closest-side, rgba(255, 255, 255, 0.86) 72%, transparent 73%),
+    conic-gradient(var(--red) 78%, rgba(220, 38, 38, 0.12) 0);
+}
+
+.risk-card.green .risk-ring {
+  background:
+    radial-gradient(circle closest-side, rgba(255, 255, 255, 0.86) 72%, transparent 73%),
+    conic-gradient(var(--green) 78%, rgba(22, 163, 74, 0.12) 0);
+}
+
+.risk-card.yellow .risk-ring {
+  background:
+    radial-gradient(circle closest-side, rgba(255, 255, 255, 0.86) 72%, transparent 73%),
+    conic-gradient(var(--yellow) 78%, rgba(234, 179, 8, 0.16) 0);
+}
+
+.risk-ring span {
+  color: var(--ink);
+  font-size: 1.8rem;
+  font-weight: 850;
+}
+
+.trend-card,
+.connectivity-card {
+  grid-column: auto;
+}
+
+.trend-card p,
+.connectivity-card p {
+  margin: 12px 0 0;
+}
+
+@media (min-width: 760px) {
+  .dashboard-hero,
+  .risk-card-body {
+    grid-template-columns: 1fr auto;
+  }
+
+  .trend-card {
+    grid-column: span 1;
+  }
+
+  .connectivity-card {
+    grid-column: span 2;
+  }
+}

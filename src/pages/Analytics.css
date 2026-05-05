@@ -1,0 +1,40 @@
+.section-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.section-title p {
+  margin-bottom: 0;
+}
+
+.status-large {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0 2px;
+  color: var(--ink);
+  font-size: 1.8rem;
+  font-weight: 850;
+}
+
+.status-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 6px rgba(22, 163, 74, 0.12);
+}
+
+.status-dot.online {
+  background: var(--green);
+}
+
+.status-dot.offline {
+  background: var(--red);
+  box-shadow: 0 0 0 6px rgba(220, 38, 38, 0.12);
+}
+
+.chart-wrap.compact {
+  height: 220px;
+}

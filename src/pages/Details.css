@@ -1,0 +1,99 @@
+.filters-body {
+  display: grid;
+  gap: 14px;
+}
+
+.filter-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink);
+}
+
+.filters label {
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.filters select {
+  min-height: 46px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0 12px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--ink);
+}
+
+.events-list {
+  display: grid;
+  gap: 14px;
+}
+
+.event-body {
+  display: grid;
+  gap: 16px;
+}
+
+.event-date {
+  display: grid;
+  gap: 4px;
+}
+
+.event-date strong {
+  color: var(--ink);
+  font-size: 1.05rem;
+}
+
+.event-date span,
+.event-location {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.event-main h2 {
+  margin-top: 12px;
+}
+
+.event-main p {
+  margin-bottom: 0;
+}
+
+.event-location {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.empty-state .card-body {
+  display: grid;
+  justify-items: center;
+  padding: 34px 18px;
+  text-align: center;
+}
+
+.empty-state svg {
+  color: var(--green);
+}
+
+@media (min-width: 760px) {
+  .filters-body {
+    grid-template-columns: auto 1fr 1fr;
+    align-items: end;
+  }
+
+  .filter-title {
+    min-height: 46px;
+  }
+
+  .event-body {
+    grid-template-columns: 150px 1fr auto;
+    align-items: center;
+  }
+
+  .event-location {
+    justify-self: end;
+  }
+}

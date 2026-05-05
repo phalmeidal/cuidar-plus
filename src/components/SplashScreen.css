@@ -1,0 +1,81 @@
+.splash {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 35% 20%, rgba(22, 163, 74, 0.2), transparent 26rem),
+    linear-gradient(135deg, #f8fafc, #ebf9f0 58%, #fffbea);
+}
+
+.splash-card {
+  display: grid;
+  justify-items: center;
+  width: min(440px, 100%);
+  border: 1px solid rgba(255, 255, 255, 0.76);
+  border-radius: 28px;
+  padding: 38px 26px;
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow: 0 28px 70px rgba(20, 83, 45, 0.14);
+  text-align: center;
+  backdrop-filter: blur(22px);
+  animation: splashEnter 520ms ease both;
+}
+
+.splash-logo {
+  display: grid;
+  width: 86px;
+  height: 86px;
+  place-items: center;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #16a34a, #0f766e);
+  color: #fff;
+  box-shadow: 0 20px 36px rgba(22, 163, 74, 0.28);
+}
+
+.splash h1 {
+  margin-top: 22px;
+}
+
+.splash p {
+  max-width: 310px;
+  margin-bottom: 24px;
+}
+
+.loading-bar {
+  width: min(260px, 100%);
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(22, 163, 74, 0.12);
+}
+
+.loading-bar span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #16a34a, #eab308);
+  transform-origin: left;
+  animation: loadingFill 1800ms ease both;
+}
+
+@keyframes splashEnter {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes loadingFill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
