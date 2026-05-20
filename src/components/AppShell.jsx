@@ -1,17 +1,18 @@
-import { Activity, BarChart3, HeartPulse, Home, ListChecks } from 'lucide-react';
+import { Activity, BarChart3, HeartPulse, Home, ListChecks, UserRound } from 'lucide-react';
 import './AppShell.css';
 
 const navItems = [
-  { id: 'dashboard', label: 'Início', icon: Home },
-  { id: 'analytics', label: 'Análises', icon: BarChart3 },
+  { id: 'dashboard', label: 'Inicio', icon: Home },
+  { id: 'analytics', label: 'Analises', icon: BarChart3 },
   { id: 'details', label: 'Detalhes', icon: ListChecks },
+  { id: 'profile', label: 'Perfil', icon: UserRound },
 ];
 
-export default function AppShell({ activePage, onNavigate, children }) {
+export default function AppShell({ activePage, onNavigate, currentUser, children }) {
   return (
     <div className="app-shell">
-      <aside className="sidebar" aria-label="Navegação principal">
-        <button className="brand" onClick={() => onNavigate('dashboard')} aria-label="Ir para início">
+      <aside className="sidebar" aria-label="Navegacao principal">
+        <button className="brand" onClick={() => onNavigate('dashboard')} aria-label="Ir para inicio">
           <span className="brand-mark">
             <HeartPulse size={24} strokeWidth={2.5} />
           </span>
@@ -39,7 +40,9 @@ export default function AppShell({ activePage, onNavigate, children }) {
 
         <div className="sidebar-note">
           <Activity size={18} />
-          <span>Dados atualizados em tempo simulado</span>
+          <span>
+            {currentUser?.role === 'admin' ? 'Acesso administrador ativo' : 'Dados atualizados em tempo simulado'}
+          </span>
         </div>
       </aside>
 

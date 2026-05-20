@@ -4,7 +4,7 @@ import { SummaryCards } from '../components/StatusCards.jsx';
 import { useMockMonitoring } from '../hooks/useMockMonitoring.js';
 import './Dashboard.css';
 
-export default function Dashboard({ onNavigate }) {
+export default function Dashboard({ onNavigate, currentUser }) {
   const { userProfile, riskSummary, fallsSummary, connectivity } = useMockMonitoring();
 
   return (
@@ -12,7 +12,7 @@ export default function Dashboard({ onNavigate }) {
       <header className="dashboard-hero">
         <div className="page-header">
           <p className="eyebrow">Painel de cuidado</p>
-          <h1>Olá, {userProfile.name}</h1>
+          <h1>Olá, {currentUser?.name || userProfile.name}</h1>
           <p>
             Visão rápida de quedas, risco atual e conexão dos sensores em {userProfile.room}.
           </p>
