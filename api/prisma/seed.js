@@ -19,65 +19,67 @@ function parseBrazilianDate(date, time) {
 }
 
 async function seed() {
-  await prisma.movementPattern.deleteMany();
-  await prisma.connectivitySnapshot.deleteMany();
-  await prisma.monitoringSnapshot.deleteMany();
-  await prisma.fallEvent.deleteMany();
-  await prisma.monitoredPerson.deleteMany();
-  await prisma.user.deleteMany();
+  await prisma.$transaction(async (database) => {
+    await database.movementPattern.deleteMany();
+    await database.connectivitySnapshot.deleteMany();
+    await database.monitoringSnapshot.deleteMany();
+    await database.fallEvent.deleteMany();
+    await database.monitoredPerson.deleteMany();
+    await database.user.deleteMany();
 
-  await prisma.user.create({
-    data: {
-      id: caregiverId,
-      name: 'Administrador Cuidar+',
-      email: 'admin@cuidar.plus',
-      role: 'admin',
-    },
-  });
+    await database.user.create({
+      data: {
+        id: caregiverId,
+        name: 'Administrador Cuidar+',
+        email: 'admin@cuidar.plus',
+        role: 'admin',
+      },
+    });
 
-  await prisma.monitoredPerson.create({
-    data: {
-      id: userProfile.id,
-      name: userProfile.name,
-      age: userProfile.age,
-      room: userProfile.room,
-      caregiverId,
-    },
-  });
+    await database.monitoredPerson.create({
+      data: {
+        id: userProfile.id,
+        name: userProfile.name,
+        age: userProfile.age,
+        room: userProfile.room,
+        caregiverId,
+      },
+    });
 
-  await prisma.monitoringSnapshot.create({
-    data: {
-      ...riskSummary,
-      ...fallsSummary,
-      monitoredPersonId: userProfile.id,
-    },
-  });
+    await database.monitoringSnapshot.create({
+      data: {
+        ...riskSummary,
+        ...fallsSummary,
+        monitoredPersonId: userProfile.id,
+      },
+    });
 
-  await prisma.connectivitySnapshot.createMany({
-    data: [
-      { ...connectivity, monitoredPersonId: userProfile.id },
-      ...connectivityHistory.map(({ day, online }) => ({
-        ...connectivity,
-        day,
-        onlineHours: online,
+    await database.connectivitySnapshot.createMany({
+      data: [
+        { ...connectivity, monitoredPersonId: userProfile.id },
+        ...connectivityHistory.map(({ day, online }) => ({
+          ...connectivity,
+          day,
+          onlineHours: online,
+          monitoredPersonId: userProfile.id,
+        })),
+      ],
+    });
+
+    await database.movementPattern.createMany({
+      data: movementPatterns.map((pattern) => ({
+        ...pattern,
         monitoredPersonId: userProfile.id,
       })),
-    ],
-  });
+    });
 
-  await prisma.movementPattern.createMany({
-    data: movementPatterns.map((pattern) => ({
-      ...pattern,
-      monitoredPersonId: userProfile.id,
-    })),
-  });
-
-  await prisma.fallEvent.createMany({
-    data: fallEvents.map(({ id: _id, date, time, ...event }) => ({
-      ...event,
-      occurredAt: parseBrazilianDate(date, time),
-      monitoredPersonId: userProfile.id,
-    })),
+    await database.fallEvent.createMany({
+      data: fallEvents.map(({ id: _id, date, time, ...event }) => ({
+        ...event,
+        occurredAt: parseBrazilianDate(date, time),
+        monitoredPersonId: userProfile.id,
+      })),
+    });
   });
 }
 
