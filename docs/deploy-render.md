@@ -1,18 +1,33 @@
-# Deploy opcional no Render
+# Deploy no Render
 
-O deploy no Render é opcional e não interfere no CI.
+Ambiente publicado:
 
-## Serviços sugeridos
+- Frontend: <https://cuidar-plus-web.onrender.com>
+- API: <https://cuidar-plus-api.onrender.com>
+- PostgreSQL: `cuidar-plus-db`, acessível internamente pela API
 
-1. Crie um PostgreSQL no Render.
-2. Crie uma API usando `Dockerfile.api` e configure `DATABASE_URL`, `PORT=3001` e
-   `NODE_ENV=production`.
-3. Crie o frontend usando `Dockerfile.web` e informe `VITE_API_URL` como build arg apontando para a
-   URL pública da API.
+Os três recursos usam serviços nativos do Render, sem Docker:
+
+| Recurso     | Configuração                                                      |
+| ----------- | ----------------------------------------------------------------- |
+| PostgreSQL  | PostgreSQL 16, plano Free, banco `cuidar_plus`                    |
+| API Node    | Build `npm ci && npm run db:generate`                             |
+| API Node    | Start `npm run db:deploy && npm run db:seed && npm run start:api` |
+| Static Site | Build `npm ci && npm run build`                                   |
+| Static Site | Publish directory `dist`                                          |
+
+Variáveis configuradas, sem registrar valores sensíveis:
+
+- API: `NODE_ENV`, `DATABASE_URL`
+- Frontend: `VITE_API_URL`
+
+O seed é transacional. Assim, reinícios e cold starts restauram os dados didáticos sem expor um
+estado parcialmente apagado para a API.
 
 ## Deploy hook
 
-No serviço Render que deve iniciar o deploy, crie um **Deploy Hook**. No GitHub, abra:
+O Auto Deploy da API está desativado. No GitHub, o secret `RENDER_DEPLOY_HOOK_URL` contém o Deploy
+Hook privado da API:
 
 ```text
 Settings -> Secrets and variables -> Actions -> New repository secret
@@ -30,12 +45,29 @@ Crie o secret `RENDER_DEPLOY_HOOK_URL` com a URL completa do hook.
 
 Nunca coloque a URL do hook em arquivos, logs ou pull requests.
 
-## Sem configuração
+O Static Site mantém Auto Deploy em `main`. Isso separa a demonstração: a API exemplifica CD
+controlado pelo GitHub Actions, enquanto o frontend exemplifica o Auto Deploy nativo do Render.
 
-Sem `RENDER_DEPLOY_HOOK_URL`, o job mostra:
+## Validação
+
+Endpoints públicos:
 
 ```text
-RENDER_DEPLOY_HOOK_URL is not configured; optional deployment skipped.
+GET https://cuidar-plus-api.onrender.com/health
+GET https://cuidar-plus-api.onrender.com/ready
+GET https://cuidar-plus-api.onrender.com/api/profile
+GET https://cuidar-plus-api.onrender.com/api/summary
+GET https://cuidar-plus-api.onrender.com/api/events
+GET https://cuidar-plus-api.onrender.com/api/analytics
 ```
 
-O workflow termina com sucesso sem efetuar deploy.
+Todos devem retornar HTTP 200. O frontend deve carregar Dashboard, Detalhes e Análises com esses
+dados.
+
+## Limitações gratuitas
+
+- A API pode suspender por inatividade e levar cerca de 50 segundos para responder novamente.
+- O banco gratuito criado em 14 de junho de 2026 expira em 14 de julho de 2026.
+- O Pre-Deploy Command é pago, então migrations e seed são executados no Start Command.
+- Sem `RENDER_DEPLOY_HOOK_URL`, o workflow continua bem-sucedido e informa que o deploy opcional foi
+  ignorado.

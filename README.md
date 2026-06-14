@@ -184,6 +184,21 @@ O deploy Render é **opcional**. `.github/workflows/deploy-render.yml` roda some
 bem-sucedido em `main`. Sem o secret `RENDER_DEPLOY_HOOK_URL`, ele executa um no-op informativo e
 termina com sucesso. Consulte [docs/deploy-render.md](docs/deploy-render.md).
 
+## Produção no Render
+
+- Frontend: <https://cuidar-plus-web.onrender.com>
+- API: <https://cuidar-plus-api.onrender.com>
+- Health: <https://cuidar-plus-api.onrender.com/health>
+- Readiness: <https://cuidar-plus-api.onrender.com/ready>
+
+O ambiente usa PostgreSQL, Web Service Node e Static Site nativos do Render. A API tem Auto Deploy
+desativado: após o CI concluir com sucesso em `main`, o workflow `Optional Render Deploy` aciona seu
+Deploy Hook. O Static Site acompanha os commits da `main` pelo Auto Deploy do Render.
+
+O plano gratuito pode suspender a API por inatividade, adicionando até cerca de 50 segundos à
+primeira requisição. O PostgreSQL gratuito criado para o seminário expira em 14 de julho de 2026,
+caso não seja migrado para outro plano ou recriado.
+
 ## Experimentos para o seminário
 
 - **Quebrar teste:** altere `78` para `77` em `tests/web/RiskCard.test.jsx`.

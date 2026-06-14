@@ -46,8 +46,13 @@
 
 ## 6. Deploy opcional
 
-- Explique o deploy hook Render e o secret `RENDER_DEPLOY_HOOK_URL`.
-- Mostre que o workflow conclui com no-op quando o secret não existe.
+- Abra <https://cuidar-plus-web.onrender.com> e percorra Dashboard, Detalhes e Análises.
+- Valide `/health` e `/ready` em <https://cuidar-plus-api.onrender.com>.
+- Mostre os recursos nativos `cuidar-plus-db`, `cuidar-plus-api` e `cuidar-plus-web`.
+- Explique o Deploy Hook da API e o secret `RENDER_DEPLOY_HOOK_URL`.
+- Mostre a sequência de um `CI` bem-sucedido seguida de `Optional Render Deploy`.
+- Compare a API com Auto Deploy desativado ao Static Site com Auto Deploy ativo.
+- Explique cold start e a expiração do PostgreSQL gratuito em 14 de julho de 2026.
 - Apresente Railway Autodeploy + Wait for CI como alternativa.
 
 ## 7. Encerramento
