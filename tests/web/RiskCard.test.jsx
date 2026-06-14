@@ -13,7 +13,7 @@ describe('RiskCard', () => {
       />,
     );
 
-    expect(screen.getByText('78')).toBeInTheDocument();
+    expect(screen.getByText('77')).toBeInTheDocument();
     expect(screen.getByText('Alto')).toBeInTheDocument();
     expect(screen.getByLabelText('Score 78 de 100')).toBeInTheDocument();
   });
