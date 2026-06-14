@@ -53,11 +53,7 @@ export default function App() {
   return (
     <PhoneFrame>
       <AppShell activePage={activePage} onNavigate={setActivePage} currentUser={currentUser}>
-        <ActivePage
-          onNavigate={setActivePage}
-          currentUser={currentUser}
-          onLogout={handleLogout}
-        />
+        <ActivePage onNavigate={setActivePage} currentUser={currentUser} onLogout={handleLogout} />
       </AppShell>
     </PhoneFrame>
   );

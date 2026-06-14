@@ -39,7 +39,7 @@ function readUsers() {
 }
 
 function toPublicUser(user) {
-  const { password, ...publicUser } = user;
+  const { password: _password, ...publicUser } = user;
   return publicUser;
 }
 

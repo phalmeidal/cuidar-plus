@@ -3,18 +3,61 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently -n web,api -c green,blue \"npm:dev:web\" \"npm:dev:api\"",
+    "dev:web": "vite",
+    "dev:api": "node scripts/run-with-env.mjs node --watch api/src/server.js",
+    "start:api": "node scripts/run-with-env.mjs node api/src/server.js",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "npm run test:web && npm run test:api",
+    "test:web": "vitest run --config vitest.web.config.js",
+    "test:api": "vitest run --config vitest.api.config.js",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage --config vitest.web.config.js && vitest run --coverage --config vitest.api.config.js",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:generate": "node scripts/run-with-env.mjs prisma generate --schema api/prisma/schema.prisma",
+    "db:migrate": "node scripts/run-with-env.mjs prisma migrate dev --schema api/prisma/schema.prisma",
+    "db:deploy": "node scripts/run-with-env.mjs prisma migrate deploy --schema api/prisma/schema.prisma",
+    "db:seed": "node scripts/run-with-env.mjs node api/prisma/seed.js",
+    "docker:validate": "node scripts/validate-compose.mjs",
+    "docker:up": "docker compose up --build",
+    "docker:down": "docker compose down"
   },
   "dependencies": {
-    "@vitejs/plugin-react": "latest",
-    "vite": "latest",
-    "react": "latest",
-    "react-dom": "latest",
-    "lucide-react": "latest",
-    "recharts": "latest"
+    "@prisma/client": "^6.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "lucide-react": "^0.468.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "recharts": "^3.1.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@eslint/js": "^9.35.0",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@vitejs/plugin-react": "^4.7.0",
+    "@vitest/coverage-v8": "^3.2.4",
+    "concurrently": "^9.2.1",
+    "eslint": "^9.35.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.4.0",
+    "js-yaml": "^4.1.0",
+    "jsdom": "^26.1.0",
+    "prettier": "^3.6.2",
+    "prisma": "^6.19.0",
+    "supertest": "^7.1.4",
+    "vite": "^7.1.5",
+    "vitest": "^3.2.4"
+  }
 }

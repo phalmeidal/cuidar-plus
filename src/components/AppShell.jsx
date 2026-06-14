@@ -12,7 +12,11 @@ export default function AppShell({ activePage, onNavigate, currentUser, children
   return (
     <div className="app-shell">
       <aside className="sidebar" aria-label="Navegacao principal">
-        <button className="brand" onClick={() => onNavigate('dashboard')} aria-label="Ir para inicio">
+        <button
+          className="brand"
+          onClick={() => onNavigate('dashboard')}
+          aria-label="Ir para inicio"
+        >
           <span className="brand-mark">
             <HeartPulse size={24} strokeWidth={2.5} />
           </span>
@@ -41,7 +45,9 @@ export default function AppShell({ activePage, onNavigate, currentUser, children
         <div className="sidebar-note">
           <Activity size={18} />
           <span>
-            {currentUser?.role === 'admin' ? 'Acesso administrador ativo' : 'Dados atualizados em tempo simulado'}
+            {currentUser?.role === 'admin'
+              ? 'Acesso administrador ativo'
+              : 'Dados atualizados em tempo simulado'}
           </span>
         </div>
       </aside>

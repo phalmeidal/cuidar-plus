@@ -1,6 +1,7 @@
 import { Filter, MapPin, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { useMockMonitoring } from '../hooks/useMockMonitoring.js';
+import MonitoringState from '../components/MonitoringState.jsx';
+import { useMonitoring } from '../hooks/useMonitoring.js';
 import './Details.css';
 
 const intensityClass = {
@@ -10,19 +11,26 @@ const intensityClass = {
 };
 
 export default function Details() {
-  const { fallEvents } = useMockMonitoring();
+  const { data, error, loading, reload } = useMonitoring();
   const [period, setPeriod] = useState('Todos');
   const [type, setType] = useState('Todos');
+  const fallEvents = useMemo(() => data?.fallEvents || [], [data]);
 
   const filteredEvents = useMemo(() => {
     return fallEvents.filter((event) => {
       const hour = Number(event.time.split(':')[0]);
       const eventPeriod = hour < 12 ? 'Manhã' : hour < 18 ? 'Tarde' : 'Noite';
-      return (period === 'Todos' || eventPeriod === period) && (type === 'Todos' || event.type === type);
+      return (
+        (period === 'Todos' || eventPeriod === period) && (type === 'Todos' || event.type === type)
+      );
     });
   }, [fallEvents, period, type]);
 
   const eventTypes = ['Todos', ...new Set(fallEvents.map((event) => event.type))];
+
+  if (!data) {
+    return <MonitoringState loading={loading} error={error} onRetry={reload} />;
+  }
 
   return (
     <section className="page">
@@ -85,7 +93,7 @@ export default function Details() {
             <div className="card-body">
               <Search size={28} />
               <h2>Nenhum evento encontrado</h2>
-              <p>Ajuste os filtros para visualizar outros registros mockados.</p>
+              <p>Ajuste os filtros para visualizar outros registros da API.</p>
             </div>
           </div>
         )}

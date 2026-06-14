@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  quality:
+    name: Quality, tests, build, and Docker
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: cuidar_plus
+          POSTGRES_USER: cuidar
+          POSTGRES_PASSWORD: cuidar
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U cuidar -d cuidar_plus"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgresql://cuidar:cuidar@localhost:5432/cuidar_plus?schema=public
+      VITE_API_URL: http://localhost:3001
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # npm ci proves the committed lockfile can reproduce the installation.
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npm run db:generate
+
+      - name: Apply migrations and seed teaching data
+        run: |
+          npm run db:deploy
+          npm run db:seed
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Run static analysis
+        run: npm run lint
+
+      - name: Run automated tests
+        run: npm run test:coverage
+
+      - name: Build frontend
+        run: npm run build
+
+      # This check works even on machines without Docker.
+      - name: Validate Compose YAML and required services
+        run: npm run docker:validate
+
+      - name: Validate Docker Compose configuration
+        run: docker compose config
+
+      - name: Build API image
+        run: docker build --file Dockerfile.api --tag cuidar-plus-api:ci .
+
+      - name: Build frontend image
+        run: docker build --file Dockerfile.web --tag cuidar-plus-web:ci .

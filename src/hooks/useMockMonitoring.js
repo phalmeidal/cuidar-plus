@@ -11,9 +11,7 @@ import {
 } from '../services/mockData';
 
 export function useMockMonitoring() {
-  const highestPeriod = fallsByPeriod.reduce((max, item) =>
-    item.falls > max.falls ? item : max,
-  );
+  const highestPeriod = fallsByPeriod.reduce((max, item) => (item.falls > max.falls ? item : max));
 
   const movementStatus =
     movementPatterns.at(-1).mobility < 70

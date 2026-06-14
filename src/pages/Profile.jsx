@@ -1,4 +1,4 @@
-import { CalendarDays, LogOut, ShieldCheck, UserRound, UsersRound } from 'lucide-react';
+import { CalendarDays, LogOut, ShieldCheck, UserRound } from 'lucide-react';
 import { getUsersSummary } from '../services/authService.js';
 import './Profile.css';
 
@@ -11,9 +11,7 @@ export default function Profile({ currentUser, onLogout }) {
       <header className="page-header">
         <p className="eyebrow">Perfil</p>
         <h1>{currentUser.name}</h1>
-        <p>
-          Gerencie sua conta e confira o nivel de acesso liberado para este prototipo.
-        </p>
+        <p>Gerencie sua conta e confira o nivel de acesso liberado para este prototipo.</p>
       </header>
 
       <article className="profile-card glass-card">

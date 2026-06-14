@@ -1,5 +1,7 @@
 node_modules/
 dist/
+coverage/
+.prisma/
 .env
 .env.local
 .env.*.local
@@ -10,5 +12,7 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 server.log
+server-error.log
 vite-out.log
 vite-err.log
+*.zip

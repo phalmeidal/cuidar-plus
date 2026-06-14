@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String            @id
+  name             String
+  email            String            @unique
+  role             String
+  monitoredPersons MonitoredPerson[]
+}
+
+model MonitoredPerson {
+  id                    String                 @id
+  name                  String
+  age                   Int
+  room                  String
+  caregiverId           String?
+  caregiver             User?                  @relation(fields: [caregiverId], references: [id])
+  fallEvents            FallEvent[]
+  monitoringSnapshots   MonitoringSnapshot[]
+  connectivitySnapshots ConnectivitySnapshot[]
+  movementPatterns      MovementPattern[]
+}
+
+model FallEvent {
+  id                Int             @id @default(autoincrement())
+  occurredAt        DateTime
+  intensity         String
+  type              String
+  location          String
+  note              String
+  monitoredPersonId String
+  monitoredPerson   MonitoredPerson @relation(fields: [monitoredPersonId], references: [id], onDelete: Cascade)
+
+  @@index([monitoredPersonId, occurredAt])
+}
+
+model MonitoringSnapshot {
+  id                Int             @id @default(autoincrement())
+  score             Int
+  level             String
+  reason            String
+  trend             String
+  today             Int
+  sevenDays         Int
+  thirtyDays        Int
+  trendDirection    String
+  trendText         String
+  createdAt         DateTime        @default(now())
+  monitoredPersonId String
+  monitoredPerson   MonitoredPerson @relation(fields: [monitoredPersonId], references: [id], onDelete: Cascade)
+
+  @@index([monitoredPersonId, createdAt])
+}
+
+model ConnectivitySnapshot {
+  id                Int             @id @default(autoincrement())
+  isConnected       Boolean
+  disconnectedFor   String
+  uptime            String
+  lastSync          String
+  day               String?
+  onlineHours       Int?
+  createdAt         DateTime        @default(now())
+  monitoredPersonId String
+  monitoredPerson   MonitoredPerson @relation(fields: [monitoredPersonId], references: [id], onDelete: Cascade)
+
+  @@index([monitoredPersonId, createdAt])
+}
+
+model MovementPattern {
+  id                Int             @id @default(autoincrement())
+  day               String
+  mobility          Int
+  abrupt            Int
+  monitoredPersonId String
+  monitoredPerson   MonitoredPerson @relation(fields: [monitoredPersonId], references: [id], onDelete: Cascade)
+
+  @@index([monitoredPersonId])
+}

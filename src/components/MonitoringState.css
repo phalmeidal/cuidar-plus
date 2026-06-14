@@ -1,0 +1,24 @@
+.monitoring-state {
+  display: grid;
+  min-height: 220px;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  padding: 28px;
+  text-align: center;
+}
+
+.monitoring-state p {
+  margin-bottom: 4px;
+}
+
+.state-spinner {
+  animation: state-spin 900ms linear infinite;
+  color: var(--green);
+}
+
+@keyframes state-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

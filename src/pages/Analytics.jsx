@@ -10,7 +10,8 @@ import {
   YAxis,
 } from 'recharts';
 import { Activity, Clock3, PlugZap, TrendingUp } from 'lucide-react';
-import { useMockMonitoring } from '../hooks/useMockMonitoring.js';
+import MonitoringState from '../components/MonitoringState.jsx';
+import { useMonitoring } from '../hooks/useMonitoring.js';
 import './Analytics.css';
 
 const tooltipStyle = {
@@ -20,6 +21,12 @@ const tooltipStyle = {
 };
 
 export default function Analytics() {
+  const { data, error, loading, reload } = useMonitoring();
+
+  if (!data) {
+    return <MonitoringState loading={loading} error={error} onRetry={reload} />;
+  }
+
   const {
     fallsOverTime,
     fallsByPeriod,
@@ -28,7 +35,7 @@ export default function Analytics() {
     movementStatus,
     connectivity,
     connectivityHistory,
-  } = useMockMonitoring();
+  } = data;
 
   return (
     <section className="page">
@@ -116,8 +123,20 @@ export default function Analytics() {
                   <XAxis dataKey="day" stroke="#64748b" tickLine={false} axisLine={false} />
                   <YAxis stroke="#64748b" tickLine={false} axisLine={false} />
                   <Tooltip contentStyle={tooltipStyle} />
-                  <Line type="monotone" dataKey="mobility" name="Mobilidade" stroke="#16a34a" strokeWidth={3} />
-                  <Line type="monotone" dataKey="abrupt" name="Movimentos bruscos" stroke="#dc2626" strokeWidth={3} />
+                  <Line
+                    type="monotone"
+                    dataKey="mobility"
+                    name="Mobilidade"
+                    stroke="#16a34a"
+                    strokeWidth={3}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="abrupt"
+                    name="Movimentos bruscos"
+                    stroke="#dc2626"
+                    strokeWidth={3}
+                  />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -136,7 +155,9 @@ export default function Analytics() {
               </div>
             </div>
             <div className="status-large">
-              <span className={connectivity.isConnected ? 'status-dot online' : 'status-dot offline'} />
+              <span
+                className={connectivity.isConnected ? 'status-dot online' : 'status-dot offline'}
+              />
               {connectivity.isConnected ? 'Conectado' : 'Desconectado'}
             </div>
             <div className="chart-wrap compact">
@@ -145,7 +166,12 @@ export default function Analytics() {
                   <XAxis dataKey="day" stroke="#64748b" tickLine={false} axisLine={false} />
                   <YAxis stroke="#64748b" tickLine={false} axisLine={false} />
                   <Tooltip contentStyle={tooltipStyle} />
-                  <Bar dataKey="online" name="Horas online" fill="#16a34a" radius={[12, 12, 4, 4]} />
+                  <Bar
+                    dataKey="online"
+                    name="Horas online"
+                    fill="#16a34a"
+                    radius={[12, 12, 4, 4]}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>

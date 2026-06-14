@@ -27,9 +27,7 @@ export default function Auth({ onAuthSuccess }) {
     event.preventDefault();
 
     try {
-      const user = isLogin
-        ? login({ email: form.email, password: form.password })
-        : register(form);
+      const user = isLogin ? login({ email: form.email, password: form.password }) : register(form);
       onAuthSuccess(user);
     } catch (authError) {
       setError(authError.message);
@@ -62,10 +60,18 @@ export default function Auth({ onAuthSuccess }) {
       <div className="auth-card glass-card">
         <div className="card-body">
           <div className="auth-tabs" role="tablist" aria-label="Acesso">
-            <button className={isLogin ? 'active' : ''} onClick={() => setMode('login')} type="button">
+            <button
+              className={isLogin ? 'active' : ''}
+              onClick={() => setMode('login')}
+              type="button"
+            >
               Entrar
             </button>
-            <button className={!isLogin ? 'active' : ''} onClick={() => setMode('register')} type="button">
+            <button
+              className={!isLogin ? 'active' : ''}
+              onClick={() => setMode('register')}
+              type="button"
+            >
               Cadastro
             </button>
           </div>
